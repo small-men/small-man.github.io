@@ -64,6 +64,13 @@
 - 自定义 hook
 
 1. 注意
+
    - hook 只能在组件中 或 自定义 hook 中运行
    - hook 不能在函数中运行
    - 自定义 hook 必须使用 use 前缀
+
+2. 自定防抖 hook
+   - 创建监听 param 状态 hook
+   - 当 param 发生变化时，开启一个定时器，将关闭定时器的函数作为 useEffect 的回调函数
+   - 当下一次触发 useEffect 就会执行关闭定时器的回调
+   - 最终返回新的对象

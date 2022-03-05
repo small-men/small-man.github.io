@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
-import { cleanObject } from "utils";
+import { cleanObject, useDebounce, useMount } from "utils";
 import * as qs from "qs";
 
 // 获取请求URL路径
@@ -26,25 +26,30 @@ export const ProjectList = () => {
    */
   const [list, setList] = useState([]);
 
+  /**
+   * 使用 useDebounce 自定义hook,对搜索组件进行防抖处理
+   */
+  const debounceParam = useDebounce(param, 2000);
+
   // 当 param 参数发生变化时，发送异步请求查询项目列表
   useEffect(() => {
-    fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(param))}`).then(
-      async (response) => {
-        if (response.ok) {
-          setList(await response.json());
-        }
+    fetch(
+      `${apiUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`
+    ).then(async (response) => {
+      if (response.ok) {
+        setList(await response.json());
       }
-    );
-  }, [param]);
+    });
+  }, [debounceParam]);
 
   // 页面装载时获取下拉列表用户
-  useEffect(() => {
+  useMount(() => {
     fetch(`${apiUrl}/users`).then(async (response) => {
       if (response.ok) {
         setUsers(await response.json());
       }
     });
-  }, []);
+  });
 
   return (
     <div>
