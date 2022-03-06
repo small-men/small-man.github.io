@@ -4,6 +4,19 @@ import { List } from "./list";
 import { cleanObject, useDebounce, useMount } from "utils";
 import * as qs from "qs";
 
+// 声明接口
+export interface User {
+  name: string;
+  id: number;
+}
+export interface Project {
+  id: number;
+  name: string;
+  personId: number;
+  organization: string;
+  created: number;
+}
+
 // 获取请求URL路径
 const apiUrl = process.env.REACT_APP_API_URL;
 
