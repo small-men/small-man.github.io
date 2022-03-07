@@ -8,6 +8,7 @@ import * as qs from "qs";
 export interface User {
   name: string;
   id: number;
+  token: string;
 }
 export interface Project {
   id: number;
