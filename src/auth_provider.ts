@@ -13,7 +13,7 @@ export const setToken = ({ user }: { user: User }) => {
 };
 
 export const login = (param: { username: string; password: string }) => {
-  fetch(`${apiUrl}/login`, {
+  return fetch(`${apiUrl}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -21,13 +21,15 @@ export const login = (param: { username: string; password: string }) => {
     body: JSON.stringify(param),
   }).then(async (response) => {
     if (response.ok) {
-      setToken(await response.json());
+      return setToken(await response.json());
+    } else {
+      return Promise.reject(await response.json());
     }
   });
 };
 
 export const register = (param: { username: string; password: string }) => {
-  fetch(`${apiUrl}/register`, {
+  return fetch(`${apiUrl}/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -35,11 +37,13 @@ export const register = (param: { username: string; password: string }) => {
     body: JSON.stringify(param),
   }).then(async (response) => {
     if (response.ok) {
-      setToken(await response.json());
+      return setToken(await response.json());
+    } else {
+      return Promise.reject(await response.json());
     }
   });
 };
 
-export const logout = () => {
+export const logout = async () => {
   window.localStorage.removeItem(localStorageKey);
 };

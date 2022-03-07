@@ -1,20 +1,11 @@
+import { useAuth } from "context/auth-context";
 import { FormEvent } from "react";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export const LoginScreen = () => {
-  const login = (param: { username: string; password: string }) => {
-    fetch(`${apiUrl}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(param),
-    }).then(async (response) => {
-      if (response.ok) {
-      }
-    });
-  };
+  // 使用 useAuth 获取用户
+  const { user, login } = useAuth();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     // 组织表单默认行为
@@ -28,6 +19,7 @@ export const LoginScreen = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      {user ? <p>{`欢迎用户：${user.name}`}</p> : undefined}
       <div>
         <label htmlFor="username">用户名</label>
         <input type={"text"} id={"username"} />
