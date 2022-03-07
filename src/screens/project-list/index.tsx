@@ -20,7 +20,7 @@ export interface Project {
 // 获取请求URL路径
 const apiUrl = process.env.REACT_APP_API_URL;
 
-export const ProjectList = () => {
+export const ProjectListScreen = () => {
   /**
    * param: 保存搜索面板参数
    */
