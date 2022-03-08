@@ -3,6 +3,7 @@ import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { cleanObject, useDebounce, useMount } from "utils";
 import * as qs from "qs";
+import { useHttp } from "utils/http";
 
 // 声明接口
 export interface User {
@@ -45,24 +46,21 @@ export const ProjectListScreen = () => {
    */
   const debounceParam = useDebounce(param, 2000);
 
+  /**
+   * 获取请求函数
+   */
+  const client = useHttp();
+
   // 当 param 参数发生变化时，发送异步请求查询项目列表
   useEffect(() => {
-    fetch(
-      `${apiUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`
-    ).then(async (response) => {
-      if (response.ok) {
-        setList(await response.json());
-      }
-    });
+    client(`projects`, {
+      data: cleanObject(debounceParam),
+    }).then(setList);
   }, [debounceParam]);
 
   // 页面装载时获取下拉列表用户
   useMount(() => {
-    fetch(`${apiUrl}/users`).then(async (response) => {
-      if (response.ok) {
-        setUsers(await response.json());
-      }
-    });
+    client("users").then(setUsers);
   });
 
   return (
