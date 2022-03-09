@@ -95,3 +95,39 @@ axios 则是请求失败返回结果也同样会被 catch 捕获
   在页面持久化实践中，由于刷新页面，会获取 localStorage 中 TOKEN 并发送异步请求
   请求结果为返回时，可能将导致页面退出登录状态
   当请求结果返回后，
+
+- utility type
+
+1. Partial<T>: 选择 T 中任意属性类型或不选
+2. Omit<T,U>: 忽略 T 中指定类型
+3. Pick<T,U>: 选择 T 中指点类型
+4. Exclude<T,U>
+
+- Partial 的实现
+  type Partial<T> = {
+  [P in keyof T]?: T[P];
+  };
+
+  - (keyof T): 获取 T 中的属性并转换为字符串的联合联合类型
+  - (P in keyof T)?: 遍历联合联合类型,并将其作为可选项
+  - (T[P]): 属性对应值
+
+- Pick 的实现
+  type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+  };
+
+  - (K extends keyof T): 约束挑选属性必须是 T 键集合的子集
+  - ([P in K]: T[P]): 传入属性与对应值匹配
+
+- Exclude 的实现
+  type Exclude<T, U> = T extends U ? never : T;
+  若 U 在 T 的约束访问内，则返回 never,即被排除
+  否则返回 T
+
+- Omit 的实现
+  type Omit<T, K extends keyof any>
+  = Pick<T, Exclude<keyof T, K>>;
+
+  - (Exclude<keyof T, K>):排除掉 T 中的对应 K 的键集
+  - (Pick<T, Exclude<keyof T, K>>): 挑选剩余 K 的键值对
