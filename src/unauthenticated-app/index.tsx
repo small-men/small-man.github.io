@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LoginScreen } from "screens";
+import { LoginScreen } from "./login";
 import { RegisterScreen } from "./register";
 
 export const UnauthenticatedApp = () => {
