@@ -1,12 +1,10 @@
 import { useAuth } from "context/auth-context";
-import { Form, Input, Button } from "antd";
+import { Form, Input } from "antd";
 import { LongButton } from "unauthenticated-app";
-
-const apiUrl = process.env.REACT_APP_API_URL;
 
 export const RegisterScreen = () => {
   // 使用 useAuth 获取用户
-  const { user, register } = useAuth();
+  const { register } = useAuth();
 
   const handleSubmit = (values: { username: string; password: string }) => {
     // 发送网络请求

@@ -19,9 +19,6 @@ export interface Project {
   created: number;
 }
 
-// 获取请求URL路径
-const apiUrl = process.env.REACT_APP_API_URL;
-
 export const ProjectListScreen = () => {
   /**
    * param: 保存搜索面板参数
@@ -56,6 +53,7 @@ export const ProjectListScreen = () => {
     client(`projects`, {
       data: cleanObject(debounceParam),
     }).then(setList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceParam]);
 
   // 页面装载时获取下拉列表用户
