@@ -4,6 +4,7 @@ import { List } from "./list";
 import { cleanObject, useDebounce, useMount } from "utils";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
+import { Typography } from "antd";
 
 // 声明接口
 export interface User {
@@ -20,6 +21,9 @@ export interface Project {
 }
 
 export const ProjectListScreen = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<null | string>(null);
+
   /**
    * param: 保存搜索面板参数
    */
@@ -50,9 +54,16 @@ export const ProjectListScreen = () => {
 
   // 当 param 参数发生变化时，发送异步请求查询项目列表
   useEffect(() => {
+    setIsLoading(true);
     client(`projects`, {
       data: cleanObject(debounceParam),
-    }).then(setList);
+    })
+      .then(setList)
+      .catch((data) => {
+        setError(data.message);
+        setList([]);
+      })
+      .finally(() => setIsLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceParam]);
 
@@ -64,8 +75,11 @@ export const ProjectListScreen = () => {
   return (
     <Container>
       <h1>项目列表</h1>
+      {error ? (
+        <Typography.Text type={"danger"}>{error}</Typography.Text>
+      ) : null}
       <SearchPanel param={param} setParam={setParam} users={users} />
-      <List list={list} users={users} />
+      <List loading={isLoading} dataSource={list} users={users} />
     </Container>
   );
 };
