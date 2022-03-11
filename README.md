@@ -131,3 +131,9 @@ axios 则是请求失败返回结果也同样会被 catch 捕获
 
   - (Exclude<keyof T, K>):排除掉 T 中的对应 K 的键集
   - (Pick<T, Exclude<keyof T, K>>): 挑选剩余 K 的键值对
+
+- emotion 使用含内样式，需要在文件顶部标注 /_@jsxImportSource @emotion/react _/
+
+- dayjs
+
+1. 安装 yarn add dayjs
