@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { LoginScreen } from "./login";
 import { RegisterScreen } from "./register";
-import { Card, Button, Divider } from "antd";
+import { Card, Button, Divider, Typography } from "antd";
 import styled from "@emotion/styled";
 import logo from "assets/logo.svg";
 import left from "assets/left.svg";
@@ -9,6 +9,7 @@ import right from "assets/right.svg";
 
 export const UnauthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(false);
+  const [error, setError] = useState<null | Error>(null);
 
   return (
     <Container>
@@ -16,7 +17,14 @@ export const UnauthenticatedApp = () => {
       <Background />
       <ShowCard>
         <Title>{isRegister ? "请注册" : "请登录"}</Title>
-        {isRegister ? <RegisterScreen /> : <LoginScreen />}
+        {error ? (
+          <Typography.Text type={"danger"}>{error.message}</Typography.Text>
+        ) : null}
+        {isRegister ? (
+          <RegisterScreen onError={setError} />
+        ) : (
+          <LoginScreen onError={setError} />
+        )}
         <Divider />
         <Button type={"link"} onClick={() => setIsRegister(!isRegister)}>{`${
           isRegister ? "已有账号？请登录账号" : "没有账号？注册新账号"

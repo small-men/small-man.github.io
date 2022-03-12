@@ -47,11 +47,11 @@ export const http = (
       window.location.reload();
       return Promise.reject("请重新登录");
     }
-
+    const data = await response.json();
     if (response.ok) {
-      return await response.json();
+      return data;
     } else {
-      return Promise.reject(await response.json());
+      return Promise.reject(data);
     }
   });
 };
