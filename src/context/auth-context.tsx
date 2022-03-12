@@ -3,6 +3,8 @@ import * as auth from "auth_provider";
 import { User } from "screens";
 import { useMount } from "utils";
 import { http } from "utils/http";
+import { useAsync } from "utils/use-async";
+import { FullPageErrorFallback, FullPageLoading } from "components/lib";
 
 const AuthContext = React.createContext<
   | undefined
@@ -33,15 +35,30 @@ export const bootstrapUser = async () => {
 };
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<null | User>(null);
-
+  const {
+    data: user,
+    run,
+    success: setUser,
+    isIdle,
+    isLoading,
+    isError,
+    error,
+  } = useAsync<User | null>();
   const login = (form: Form) => auth.login(form).then(setUser);
   const register = (form: Form) => auth.register(form).then(setUser);
   const logout = () => auth.logout().then(() => setUser(null));
 
   useMount(() => {
-    bootstrapUser().then(setUser);
+    run(bootstrapUser());
   });
+
+  if (isIdle || isLoading) {
+    return <FullPageLoading />;
+  }
+
+  if (isError) {
+    return <FullPageErrorFallback error={error} />;
+  }
 
   return (
     <AuthContext.Provider
