@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
-import { useDebounce } from "utils";
+import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProject } from "utils/use-project";
 import { useUser } from "utils/use-User";
+// import { Helmet } from "react-helmet";
 
 // 声明接口
 export interface User {
@@ -41,8 +42,13 @@ export const ProjectListScreen = () => {
   const { error, isLoading, data: list } = useProject(debounceParam);
   const { data: users } = useUser();
 
+  useDocumentTitle("项目列表", false);
+
   return (
     <Container>
+      {/* <Helmet>
+        <title>项目列表</title>
+      </Helmet> */}
       <h1>项目列表</h1>
       {error ? (
         <Typography.Text type={"danger"}>{error}</Typography.Text>
