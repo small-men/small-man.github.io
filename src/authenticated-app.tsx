@@ -6,6 +6,7 @@ import { Row } from "components/lib";
 import { Dropdown, Menu, Button } from "antd";
 import { Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
+import { resetRoute } from "utils";
 
 export const AuthenticatedApp = () => {
   return (
@@ -29,7 +30,10 @@ const PageHeader = () => {
   return (
     <Header between={true}>
       <Left gap={2}>
-        <SoftwareLogo width={"18rem"} />
+        <Button type={"link"} onClick={resetRoute}>
+          <SoftwareLogo width={"18rem"} />
+        </Button>
+
         <h3>项目</h3>
         <h3>用户</h3>
       </Left>

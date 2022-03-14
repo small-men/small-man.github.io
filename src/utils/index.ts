@@ -75,3 +75,6 @@ export const useDocumentTitle = (
     []
   );
 };
+
+// 重置路由
+export const resetRoute = () => (window.location.href = window.location.origin);
