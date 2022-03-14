@@ -1,40 +1,54 @@
 import { useAuth } from "context/auth-context";
-import { ProjectListScreen } from "screens";
+import { ProjectListScreen, ProjectScreen } from "screens";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import styled from "@emotion/styled";
 import { Row } from "components/lib";
 import { Dropdown, Menu, Button } from "antd";
+import { Route, Routes } from "react-router";
+import { BrowserRouter } from "react-router-dom";
 
 export const AuthenticatedApp = () => {
+  return (
+    <BrowserRouter>
+      <Container>
+        <PageHeader />
+        <Main>
+          <Routes>
+            <Route path={"/project"} element={<ProjectListScreen />} />
+            <Route path={"/project/:projectId/*"} element={<ProjectScreen />} />
+            <Route index element={<ProjectListScreen />} />
+          </Routes>
+        </Main>
+      </Container>
+    </BrowserRouter>
+  );
+};
+
+const PageHeader = () => {
   const { logout, user } = useAuth();
   return (
-    <Container>
-      <Header between={true}>
-        <Left gap={2}>
-          <SoftwareLogo width={"18rem"} />
-          <h3>项目</h3>
-          <h3>用户</h3>
-        </Left>
-        <Right>
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item key={"logout"}>
-                  <Button type={"link"} onClick={logout}>
-                    登出
-                  </Button>
-                </Menu.Item>
-              </Menu>
-            }
-          >
-            <Button type={"link"}>Hi,{user?.name}</Button>
-          </Dropdown>
-        </Right>
-      </Header>
-      <Main>
-        <ProjectListScreen />
-      </Main>
-    </Container>
+    <Header between={true}>
+      <Left gap={2}>
+        <SoftwareLogo width={"18rem"} />
+        <h3>项目</h3>
+        <h3>用户</h3>
+      </Left>
+      <Right>
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item key={"logout"}>
+                <Button type={"link"} onClick={logout}>
+                  登出
+                </Button>
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <Button type={"link"}>Hi,{user?.name}</Button>
+        </Dropdown>
+      </Right>
+    </Header>
   );
 };
 
