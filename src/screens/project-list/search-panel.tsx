@@ -1,14 +1,11 @@
 /*@jsxImportSource @emotion/react */
-import { User } from ".";
+import { Project, User } from ".";
 import { Form, Input } from "antd";
 
 interface SearchPanelProps {
-  param: {
-    name: string;
-    personId: string;
-  };
-  setParam: (param: SearchPanelProps["param"]) => void;
   users: User[];
+  param: Partial<Pick<Project, "name" | "personId">>;
+  setParam: (param: SearchPanelProps["param"]) => void;
 }
 
 export const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => {

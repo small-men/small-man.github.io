@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProject } from "utils/use-project";
 import { useUser } from "utils/use-User";
+import { useUrlQueryParam } from "utils/utl";
 // import { Helmet } from "react-helmet";
 
 // 声明接口
@@ -23,13 +24,12 @@ export interface Project {
 }
 
 export const ProjectListScreen = () => {
+  const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
+
   /**
    * param: 保存搜索面板参数
    */
-  const [param, setParam] = useState({
-    name: "",
-    personId: "",
-  });
+  const [param, setParam] = useUrlQueryParam(keys);
 
   /**
    * 使用 useDebounce 自定义hook,对搜索组件进行防抖处理
@@ -58,6 +58,8 @@ export const ProjectListScreen = () => {
     </Container>
   );
 };
+
+ProjectListScreen.whyDidYouRender = true;
 
 const Container = styled.div`
   padding: 3.2rem;
