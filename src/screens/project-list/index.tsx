@@ -5,31 +5,28 @@ import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProject } from "utils/use-project";
-import { useUser } from "utils/use-User";
-import { useUrlQueryParam } from "utils/utl";
+import { useUsers } from "utils/use-User";
+import { useUrlQueryParam } from "utils/url";
+import { useProjectSearchParams } from "./util";
 // import { Helmet } from "react-helmet";
 
 // 声明接口
 export interface User {
   name: string;
-  id: string;
+  id: number;
   token: string;
 }
 export interface Project {
   id: number;
   name: string;
-  personId: string;
+  personId: number;
   organization: string;
   created: number;
 }
 
 export const ProjectListScreen = () => {
   const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
-
-  /**
-   * param: 保存搜索面板参数
-   */
-  const [param, setParam] = useUrlQueryParam(keys);
+  const [param, setParam] = useProjectSearchParams();
 
   /**
    * 使用 useDebounce 自定义hook,对搜索组件进行防抖处理
@@ -40,7 +37,7 @@ export const ProjectListScreen = () => {
    * 获取处理Promise 函数
    */
   const { error, isLoading, data: list } = useProject(debounceParam);
-  const { data: users } = useUser();
+  const { data: users } = useUsers();
 
   useDocumentTitle("项目列表", false);
 
