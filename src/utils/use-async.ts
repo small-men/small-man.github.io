@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMountRef } from "utils";
 
 /**
  * error: 错误信息，无或者字符串
@@ -62,6 +63,9 @@ export const useAsync = <T>(
       data: null,
     });
 
+  // 获取 useMountedRef 判断组件状态
+  const mountedRef = useMountRef();
+
   // 处理请求Promise
   const run = (
     promise: Promise<T>,
@@ -83,8 +87,9 @@ export const useAsync = <T>(
     // 根据 Promise 结果返回数据
     return promise
       .then((data) => {
-        //   当请求成功时
-        success(data);
+        // 当请求成功时
+        // 判断组件状态
+        if (mountedRef.current) success(data);
         return data;
       })
       .catch((error) => {
