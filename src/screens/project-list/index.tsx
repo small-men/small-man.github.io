@@ -22,6 +22,7 @@ export interface Project {
   personId: number;
   organization: string;
   created: number;
+  pin: boolean;
 }
 
 export const ProjectListScreen = () => {
