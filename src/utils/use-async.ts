@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useMountRef } from "utils";
 
 /**
@@ -49,58 +49,64 @@ export const useAsync = <T>(
   const [retry, setRetry] = useState(() => () => {});
 
   // 当请求成功时
-  const success = (data: T) =>
-    setState({
-      data,
-      stat: "success",
-      error: null,
-    });
+  const success = useCallback(
+    (data: T) =>
+      setState({
+        data,
+        stat: "success",
+        error: null,
+      }),
+    []
+  );
   // 当请求失败时
-  const fail = (error: Error) =>
-    setState({
-      error,
-      stat: "error",
-      data: null,
-    });
+  const fail = useCallback(
+    (error: Error) =>
+      setState({
+        error,
+        stat: "error",
+        data: null,
+      }),
+    []
+  );
 
   // 获取 useMountedRef 判断组件状态
   const mountedRef = useMountRef();
 
   // 处理请求Promise
-  const run = (
-    promise: Promise<T>,
-    runConfig?: { retry: () => Promise<T> }
-  ) => {
-    if (!promise || !promise.then) {
-      throw new Error("请传入Promise类型数据");
-    }
-    // 设置状态为 loading
-    setState({ ...state, stat: "loading" });
-
-    // 保存 retry
-    setRetry(() => () => {
-      if (runConfig?.retry) {
-        run(runConfig?.retry(), runConfig);
+  const run = useCallback(
+    (promise: Promise<T>, runConfig?: { retry: () => Promise<T> }) => {
+      if (!promise || !promise.then) {
+        throw new Error("请传入Promise类型数据");
       }
-    });
+      // 设置状态为 loading
+      setState((prev) => ({ ...prev, stat: "loading" }));
 
-    // 根据 Promise 结果返回数据
-    return promise
-      .then((data) => {
-        // 当请求成功时
-        // 判断组件状态
-        if (mountedRef.current) success(data);
-        return data;
-      })
-      .catch((error) => {
-        fail(error);
-        // 当请求失败时
-        if (config.throwOnError) {
-          return Promise.reject(error);
+      // 保存 retry
+      setRetry(() => () => {
+        if (runConfig?.retry) {
+          run(runConfig?.retry(), runConfig);
         }
-        return error;
       });
-  };
+
+      // 根据 Promise 结果返回数据
+      return promise
+        .then((data) => {
+          // 当请求成功时
+          // 判断组件状态
+          if (mountedRef.current) success(data);
+          return data;
+        })
+        .catch((error) => {
+          fail(error);
+          // 当请求失败时
+          if (config.throwOnError) {
+            return Promise.reject(error);
+          }
+          return error;
+        });
+    },
+    [config.throwOnError, mountedRef, success, fail]
+  );
 
   // hook 返回
   return {
