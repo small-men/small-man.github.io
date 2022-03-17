@@ -3,7 +3,7 @@ import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import { useProject } from "utils/use-project";
 import { useUsers } from "utils/use-User";
 import { useUrlQueryParam } from "utils/url";
@@ -37,7 +37,7 @@ export const ProjectListScreen = () => {
   /**
    * 获取处理Promise 函数
    */
-  const { error, isLoading, data: list } = useProject(debounceParam);
+  const { error, isLoading, data: list, retry } = useProject(debounceParam);
   const { data: users } = useUsers();
 
   useDocumentTitle("项目列表", false);
@@ -47,12 +47,18 @@ export const ProjectListScreen = () => {
       {/* <Helmet>
         <title>项目列表</title>
       </Helmet> */}
+      <Button onClick={retry}>点我刷新页面</Button>
       <h1>项目列表</h1>
       {error ? (
         <Typography.Text type={"danger"}>{error}</Typography.Text>
       ) : null}
       <SearchPanel param={param} setParam={setParam} users={users || []} />
-      <List loading={isLoading} dataSource={list || []} users={users || []} />
+      <List
+        refresh={retry}
+        loading={isLoading}
+        dataSource={list || []}
+        users={users || []}
+      />
     </Container>
   );
 };

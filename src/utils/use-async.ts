@@ -43,6 +43,10 @@ export const useAsync = <T>(
     ...defaultInitialState,
     ...initialState,
   });
+
+  // 保存 retry 状态
+  const [retry, setRetry] = useState(() => () => {});
+
   // 当请求成功时
   const success = (data: T) =>
     setState({
@@ -59,12 +63,23 @@ export const useAsync = <T>(
     });
 
   // 处理请求Promise
-  const run = (promise: Promise<T>) => {
+  const run = (
+    promise: Promise<T>,
+    runConfig?: { retry: () => Promise<T> }
+  ) => {
     if (!promise || !promise.then) {
       throw new Error("请传入Promise类型数据");
     }
     // 设置状态为 loading
     setState({ ...state, stat: "loading" });
+
+    // 保存 retry
+    setRetry(() => () => {
+      if (runConfig?.retry) {
+        run(runConfig?.retry(), runConfig);
+      }
+    });
+
     // 根据 Promise 结果返回数据
     return promise
       .then((data) => {
@@ -88,9 +103,11 @@ export const useAsync = <T>(
     isLoading: state.stat === "loading",
     isError: state.stat === "error",
     isSuccess: state.stat === "success",
-    ...state,
     run,
     success,
     fail,
+    // 重新运行一次run
+    retry,
+    ...state,
   };
 };
