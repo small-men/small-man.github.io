@@ -77,8 +77,5 @@ export const useUndo = <T>(initialPresent: T) => {
     });
   }, []);
 
-  return [
-    { past, present, future },
-    { set, reset, undo, redo, canRedo, canUndo },
-  ] as const;
+  return [state, { set, reset, undo, redo, canRedo, canUndo }] as const;
 };
