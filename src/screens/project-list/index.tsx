@@ -8,6 +8,7 @@ import { useProject } from "utils/use-project";
 import { useUsers } from "utils/use-User";
 import { useUrlQueryParam } from "utils/url";
 import { useProjectSearchParams } from "./util";
+import { Row } from "components/lib";
 // import { Helmet } from "react-helmet";
 
 // 声明接口
@@ -25,7 +26,11 @@ export interface Project {
   pin: boolean;
 }
 
-export const ProjectListScreen = () => {
+export const ProjectListScreen = ({
+  setProjectModalOpen,
+}: {
+  setProjectModalOpen: (isOpen: boolean) => void;
+}) => {
   const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
   const [param, setParam] = useProjectSearchParams();
 
@@ -47,13 +52,16 @@ export const ProjectListScreen = () => {
       {/* <Helmet>
         <title>项目列表</title>
       </Helmet> */}
-      <Button onClick={retry}>点我刷新页面</Button>
-      <h1>项目列表</h1>
+      <Row between={true}>
+        <h1>项目列表</h1>
+        <Button onClick={() => setProjectModalOpen(true)}>创建项目</Button>
+      </Row>
       {error ? (
         <Typography.Text type={"danger"}>{error}</Typography.Text>
       ) : null}
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       <List
+        setProjectModalOpen={setProjectModalOpen}
         refresh={retry}
         loading={isLoading}
         dataSource={list || []}
