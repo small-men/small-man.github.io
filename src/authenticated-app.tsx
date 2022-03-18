@@ -17,20 +17,47 @@ export const AuthenticatedApp = () => {
   return (
     <BrowserRouter>
       <Container>
-        <PageHeader setProjectModalOpen={setProjectModalOpen} />
+        <PageHeader
+          projectModalButton={
+            <ButtonNoPadding
+              type={"link"}
+              onClick={() => setProjectModalOpen(true)}
+            >
+              创建项目
+            </ButtonNoPadding>
+          }
+        />
         <Main>
           <Routes>
             <Route
               path={"/project"}
               element={
-                <ProjectListScreen setProjectModalOpen={setProjectModalOpen} />
+                <ProjectListScreen
+                  projectModalButton={
+                    <ButtonNoPadding
+                      type={"link"}
+                      onClick={() => setProjectModalOpen(true)}
+                    >
+                      创建项目
+                    </ButtonNoPadding>
+                  }
+                />
               }
             />
             <Route path={"/project/:projectId/*"} element={<ProjectScreen />} />
             <Route
               index
               element={
-                <ProjectListScreen setProjectModalOpen={setProjectModalOpen} />
+                <ProjectListScreen
+                  projectModalButton={
+                    <ButtonNoPadding
+                      type={"link"}
+                      onClick={() => setProjectModalOpen(true)}
+                    >
+                      创建项目
+                    </ButtonNoPadding>
+                  }
+                />
               }
             />
           </Routes>
@@ -44,18 +71,14 @@ export const AuthenticatedApp = () => {
   );
 };
 
-const PageHeader = ({
-  setProjectModalOpen,
-}: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+const PageHeader = (props: { projectModalButton: JSX.Element }) => {
   return (
     <Header between={true}>
       <Left gap={2}>
         <ButtonNoPadding type={"link"} onClick={resetRoute}>
           <SoftwareLogo width={"18rem"} />
         </ButtonNoPadding>
-        <ProjectPopover setProjectModalOpen={setProjectModalOpen} />
+        <ProjectPopover projectModalButton={props.projectModalButton} />
         <span>用户</span>
       </Left>
       <Right>

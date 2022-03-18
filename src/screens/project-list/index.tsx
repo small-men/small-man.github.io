@@ -26,10 +26,8 @@ export interface Project {
   pin: boolean;
 }
 
-export const ProjectListScreen = ({
-  setProjectModalOpen,
-}: {
-  setProjectModalOpen: (isOpen: boolean) => void;
+export const ProjectListScreen = (props: {
+  projectModalButton: JSX.Element;
 }) => {
   const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
   const [param, setParam] = useProjectSearchParams();
@@ -54,14 +52,14 @@ export const ProjectListScreen = ({
       </Helmet> */}
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={() => setProjectModalOpen(true)}>创建项目</Button>
+        {props.projectModalButton}
       </Row>
       {error ? (
         <Typography.Text type={"danger"}>{error}</Typography.Text>
       ) : null}
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       <List
-        setProjectModalOpen={setProjectModalOpen}
+        projectModalButton={props.projectModalButton}
         refresh={retry}
         loading={isLoading}
         dataSource={list || []}
