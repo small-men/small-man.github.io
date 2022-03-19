@@ -5,15 +5,16 @@ import { Link } from "react-router-dom";
 import { Pin } from "components/pin";
 import { useEditProject } from "utils/use-project";
 import { ButtonNoPadding } from "components/lib";
+import { useProjectModal } from "./util";
 
 interface ListProps extends TableProps<Project> {
   users: User[];
   refresh?: () => void;
-  projectModalButton: JSX.Element;
 }
 
 export const List = ({ users, ...props }: ListProps) => {
   const { mutate } = useEditProject();
+  const { open } = useProjectModal();
   const pinProject = (id: number) => (pin: boolean) =>
     mutate({ id, pin }).then(props.refresh);
   return (
@@ -74,7 +75,9 @@ export const List = ({ users, ...props }: ListProps) => {
                 overlay={
                   <Menu>
                     <Menu.Item key={"edit"}>
-                      {props.projectModalButton}
+                      <ButtonNoPadding type={"link"} onClick={open}>
+                        编辑
+                      </ButtonNoPadding>
                     </Menu.Item>
                   </Menu>
                 }

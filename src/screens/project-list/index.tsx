@@ -5,8 +5,8 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProject } from "utils/use-project";
 import { useUsers } from "utils/use-User";
-import { useProjectSearchParams } from "./util";
-import { Row } from "components/lib";
+import { useProjectModal, useProjectSearchParams } from "./util";
+import { ButtonNoPadding, Row } from "components/lib";
 // import { Helmet } from "react-helmet";
 
 // 声明接口
@@ -24,10 +24,9 @@ export interface Project {
   pin: boolean;
 }
 
-export const ProjectListScreen = (props: {
-  projectModalButton: JSX.Element;
-}) => {
+export const ProjectListScreen = () => {
   const [param, setParam] = useProjectSearchParams();
+  const { open } = useProjectModal();
 
   /**
    * 使用 useDebounce 自定义hook,对搜索组件进行防抖处理
@@ -49,14 +48,15 @@ export const ProjectListScreen = (props: {
       </Helmet> */}
       <Row between={true}>
         <h1>项目列表</h1>
-        {props.projectModalButton}
+        <ButtonNoPadding type={"link"} onClick={open}>
+          创建项目
+        </ButtonNoPadding>
       </Row>
       {error ? (
         <Typography.Text type={"danger"}>{error}</Typography.Text>
       ) : null}
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       <List
-        projectModalButton={props.projectModalButton}
         refresh={retry}
         loading={isLoading}
         dataSource={list || []}
@@ -66,7 +66,7 @@ export const ProjectListScreen = (props: {
   );
 };
 
-ProjectListScreen.whyDidYouRender = true;
+// ProjectListScreen.whyDidYouRender = true;
 
 const Container = styled.div`
   padding: 3.2rem;
