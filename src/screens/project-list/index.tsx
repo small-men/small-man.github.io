@@ -1,12 +1,10 @@
-import { useState } from "react";
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
-import { Button, Typography } from "antd";
+import { Typography } from "antd";
 import { useProject } from "utils/use-project";
 import { useUsers } from "utils/use-User";
-import { useUrlQueryParam } from "utils/url";
 import { useProjectSearchParams } from "./util";
 import { Row } from "components/lib";
 // import { Helmet } from "react-helmet";
@@ -29,7 +27,6 @@ export interface Project {
 export const ProjectListScreen = (props: {
   projectModalButton: JSX.Element;
 }) => {
-  const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
   const [param, setParam] = useProjectSearchParams();
 
   /**

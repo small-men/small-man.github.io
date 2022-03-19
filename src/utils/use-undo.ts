@@ -65,6 +65,7 @@ const undoReducer = <T>(state: State<T>, action: Action<T>) => {
 };
 
 export const useUndo = <T>(initialPresent: T) => {
+  // useReducer 返回['状态','处理函数']
   const [state, dispatch] = useReducer(undoReducer, {
     past: [],
     present: initialPresent,

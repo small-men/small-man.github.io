@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useReducer, useState } from "react";
 import { useMountRef } from "utils";
 
 /**
@@ -29,6 +29,16 @@ const defaultConfig = {
   throwOnError: false,
 };
 
+// 抽象useMountRef
+const useSafeDispatch = <T>(dispatch: (...args: T[]) => void) => {
+  // 获取 useMountedRef 判断组件状态
+  const mountedRef = useMountRef();
+  return useCallback(
+    (...args: T[]) => (mountedRef.current ? dispatch(...args) : void 0),
+    [mountedRef, dispatch]
+  );
+};
+
 export const useAsync = <T>(
   initialState?: State<T>,
   initialConfig?: typeof defaultConfig
@@ -40,37 +50,40 @@ export const useAsync = <T>(
   };
 
   // 保存状态,将传入状态替换预定义状态
-  const [state, setState] = useState({
-    ...defaultInitialState,
-    ...initialState,
-  });
+  const [state, dispatch] = useReducer(
+    (state: State<T>, action: Partial<State<T>>) => ({ ...state, ...action }),
+    {
+      ...defaultInitialState,
+      ...initialState,
+    }
+  );
 
   // 保存 retry 状态
   const [retry, setRetry] = useState(() => () => {});
 
+  // 可判断组件状态的 dispatch
+  const safeDispatch = useSafeDispatch(dispatch);
+
   // 当请求成功时
   const success = useCallback(
     (data: T) =>
-      setState({
+      safeDispatch({
         data,
         stat: "success",
         error: null,
       }),
-    []
+    [safeDispatch]
   );
   // 当请求失败时
   const fail = useCallback(
     (error: Error) =>
-      setState({
+      safeDispatch({
         error,
         stat: "error",
         data: null,
       }),
-    []
+    [safeDispatch]
   );
-
-  // 获取 useMountedRef 判断组件状态
-  const mountedRef = useMountRef();
 
   // 处理请求Promise
   const run = useCallback(
@@ -79,7 +92,7 @@ export const useAsync = <T>(
         throw new Error("请传入Promise类型数据");
       }
       // 设置状态为 loading
-      setState((prev) => ({ ...prev, stat: "loading" }));
+      safeDispatch({ stat: "loading" });
 
       // 保存 retry
       setRetry(() => () => {
@@ -92,8 +105,7 @@ export const useAsync = <T>(
       return promise
         .then((data) => {
           // 当请求成功时
-          // 判断组件状态
-          if (mountedRef.current) success(data);
+          success(data);
           return data;
         })
         .catch((error) => {
@@ -105,7 +117,7 @@ export const useAsync = <T>(
           return error;
         });
     },
-    [config.throwOnError, mountedRef, success, fail]
+    [config.throwOnError, success, fail, safeDispatch]
   );
 
   // hook 返回
