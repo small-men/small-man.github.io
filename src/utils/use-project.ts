@@ -33,7 +33,7 @@ export const useEditProject = () => {
       });
     },
     {
-      onSuccess: () => queryClient.invalidateQueries("projects"),
+      onSuccess: () => queryClient.invalidateQueries(queryKey),
       async onMutate(target) {
         // 获取缓存列表
         const previousItems = queryClient.getQueryData(queryKey);
