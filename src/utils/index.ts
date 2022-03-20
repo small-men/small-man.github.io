@@ -57,7 +57,7 @@ export const useDocumentTitle = (
   // 保存页面加载前的标题
   const oldTitle = useRef(document.title).current;
 
-  console.log("渲染时的oldTitle", oldTitle);
+  // console.log("渲染时的oldTitle", oldTitle);
 
   // 监听title状态变化
   useEffect(() => {
@@ -68,7 +68,7 @@ export const useDocumentTitle = (
   useEffect(
     () => () => {
       if (!keepOnUnmount) {
-        console.log("组件卸载时的oldTitle", oldTitle);
+        // console.log("组件卸载时的oldTitle", oldTitle);
         document.title = oldTitle;
       }
     },
