@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import { Drawer, Button, Spin, Form, Input } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { ErrorBox } from "components/lib";
@@ -38,49 +39,57 @@ export const ProjectModal = () => {
       visible={projectModalOpen}
       width={"100%"}
     >
-      {isLoading ? (
-        <Spin size={"large"} />
-      ) : (
-        <>
-          <h1>{title}</h1>
-          <ErrorBox error={error} />
-          <Form
-            form={form}
-            layout={"vertical"}
-            style={{ width: "40rem" }}
-            onFinish={onFinish}
-          >
-            <Form.Item
-              label={"名称"}
-              name={"name"}
-              rules={[{ required: true, message: "请输入项目名" }]}
+      <Container>
+        {isLoading ? (
+          <Spin size={"large"} />
+        ) : (
+          <>
+            <h1>{title}</h1>
+            <ErrorBox error={error} />
+            <Form
+              form={form}
+              layout={"vertical"}
+              style={{ width: "40rem" }}
+              onFinish={onFinish}
             >
-              <Input placeholder={"请输入项目名"} />
-            </Form.Item>
-            <Form.Item
-              label={"部门"}
-              name={"organization"}
-              rules={[{ required: true, message: "请输入部门名" }]}
-            >
-              <Input placeholder={"请输入部门名"} />
-            </Form.Item>
-            <Form.Item label={"负责人"} name={"personId"}>
-              <UserSelect defaultOptionName="负责人" />
-            </Form.Item>
-            <Form.Item>
-              <Button
-                type={"primary"}
-                htmlType={"submit"}
-                loading={mutateLoading}
+              <Form.Item
+                label={"名称"}
+                name={"name"}
+                rules={[{ required: true, message: "请输入项目名" }]}
               >
-                提交
-              </Button>
-            </Form.Item>
-          </Form>
-        </>
-      )}
-      <h1>Project Modal</h1>
-      <Button onClick={close}>关闭</Button>
+                <Input placeholder={"请输入项目名"} />
+              </Form.Item>
+              <Form.Item
+                label={"部门"}
+                name={"organization"}
+                rules={[{ required: true, message: "请输入部门名" }]}
+              >
+                <Input placeholder={"请输入部门名"} />
+              </Form.Item>
+              <Form.Item label={"负责人"} name={"personId"}>
+                <UserSelect defaultOptionName="负责人" />
+              </Form.Item>
+              <Form.Item style={{ textAlign: "right" }}>
+                <Button
+                  type={"primary"}
+                  htmlType={"submit"}
+                  loading={mutateLoading}
+                >
+                  提交
+                </Button>
+              </Form.Item>
+            </Form>
+          </>
+        )}
+      </Container>
     </Drawer>
   );
 };
+
+const Container = styled.div`
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
