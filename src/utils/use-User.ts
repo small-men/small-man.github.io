@@ -1,4 +1,4 @@
-import { User } from "screens";
+import { User } from "types/user";
 import { useMount } from "utils";
 import { useHttp } from "./http";
 import { useAsync } from "./use-async";

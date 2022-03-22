@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as auth from "auth_provider";
-import { User } from "screens";
+import { User } from "types/user";
 import { useMount } from "utils";
 import { http } from "utils/http";
 import { useAsync } from "utils/use-async";

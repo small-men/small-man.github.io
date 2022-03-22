@@ -1,4 +1,4 @@
-import { User } from "screens";
+import { User } from "types/user";
 
 const localStorageKey = "__auth_provider_token__";
 const apiUrl = process.env.REACT_APP_API_URL;

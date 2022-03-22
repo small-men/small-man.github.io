@@ -1,4 +1,5 @@
-import { Project, User } from "./index";
+import { User } from "types/user";
+import { Project } from "types/project";
 import { Dropdown, Menu, Modal, Table, TableProps } from "antd";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
