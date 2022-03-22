@@ -6,6 +6,7 @@ export interface Task {
   projectId: number;
   epicId: number;
   kanbanId: number;
+  // bug or task
   typeId: number;
   note: string;
 }
