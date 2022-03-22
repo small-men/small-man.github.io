@@ -24,8 +24,9 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
 };
 
 export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
+  const [param] = useTasksSearchParams();
   // 获取所有任务详情
-  const { data: allTasks } = useTasks(useTasksSearchParams());
+  const { data: allTasks } = useTasks(param);
   // 通过任务kanbanId 配置 看板
   const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
 
