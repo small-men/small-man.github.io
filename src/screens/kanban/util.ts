@@ -1,8 +1,8 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useLocation } from "react-router";
-import { useDebounce } from "utils";
 import { useUrlQueryParam } from "utils/url";
 import { useGetProject } from "utils/use-project";
+import { useGetTask } from "utils/use-task";
 
 // 提取url中projectId
 export const useProjectIdInUrl = () => {
@@ -39,7 +39,34 @@ export const useTasksSearchParams = () => {
         },
         setParam,
       ] as const,
-    [projectId, param]
+    [projectId, param, setParam]
   );
 };
 export const useTasksQueryKey = () => ["tasks", useTasksSearchParams()[0]];
+
+// 控制任务编辑模块开关
+export const useTaskModal = () => {
+  const [{ editingTaskId }, setEditingTaskId] = useUrlQueryParam([
+    "editingTaskId",
+  ]);
+  const { data: editingTask, isLoading } = useGetTask(Number(editingTaskId));
+  // 打开任务编辑
+  const startEdit = useCallback(
+    (id: number) => {
+      setEditingTaskId({ editingTaskId: id });
+    },
+    [setEditingTaskId]
+  );
+  // 关闭任务编辑
+  const close = useCallback(() => {
+    setEditingTaskId({ editingTaskId: undefined });
+  }, [setEditingTaskId]);
+
+  return {
+    editingTaskId, // 编辑任务的id
+    editingTask, // 编辑任务
+    startEdit, // 开
+    close, // 关
+    isLoading, // 加载状态
+  };
+};

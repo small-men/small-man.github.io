@@ -1,7 +1,6 @@
 import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useDebounce, useDocumentTitle } from "utils";
-import styled from "@emotion/styled";
 import { useProject } from "utils/use-project";
 import { useUsers } from "utils/use-user";
 import { useProjectModal, useProjectSearchParams } from "./util";

@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
 import { Kanban } from "types/kanban";
 import { useTasks } from "utils/use-task";
-import { useTasksSearchParams } from "./util";
+import { useTaskModal, useTasksSearchParams } from "./util";
 import bugIcon from "assets/bug.svg";
 import taskIcon from "assets/task.svg";
 import { useTaskTypes } from "utils/task-type";
 import { Card } from "antd";
 import { CreateTask } from "./create-task";
-import { useEffect } from "react";
 
 // icon 组件
 const TaskTypeIcon = ({ id }: { id: number }) => {
@@ -21,6 +20,7 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
     <img
       src={name === "task" ? taskIcon : bugIcon}
       style={{ width: "1.5rem" }}
+      alt={"task-icon"}
     />
   );
 };
@@ -32,13 +32,19 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
   // 通过任务kanbanId 配置 看板
   const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
 
+  const { startEdit } = useTaskModal();
+
   return (
     <Container>
       <h2>{kanban.name}</h2>
       <TaskContainer>
         {tasks?.map((task) => {
           return (
-            <Card style={{ marginBottom: "0.5rem" }} key={task.id + task.name}>
+            <Card
+              onClick={() => startEdit(task.id)}
+              style={{ marginBottom: "0.5rem", cursor: "pointer" }}
+              key={task.id + task.name}
+            >
               <div>{task.name}</div>
               <TaskTypeIcon id={task.typeId} />
             </Card>

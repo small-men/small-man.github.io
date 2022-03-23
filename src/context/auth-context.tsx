@@ -6,7 +6,6 @@ import { http } from "utils/http";
 import { useAsync } from "utils/use-async";
 import { FullPageErrorFallback, FullPageLoading } from "components/lib";
 import { useQueryClient } from "react-query";
-import { useLocation } from "react-router";
 
 const AuthContext = React.createContext<
   | undefined

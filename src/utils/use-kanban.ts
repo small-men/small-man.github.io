@@ -1,6 +1,5 @@
 import { QueryKey, useMutation, useQuery } from "react-query";
 import { Kanban } from "types/kanban";
-import { Task } from "types/task";
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
 import { useAddConfig } from "./use-optimistic-options";

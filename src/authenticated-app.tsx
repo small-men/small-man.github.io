@@ -5,12 +5,9 @@ import styled from "@emotion/styled";
 import { ButtonNoPadding, Row } from "components/lib";
 import { Dropdown, Menu, Button } from "antd";
 import { Route, Routes } from "react-router";
-import { BrowserRouter } from "react-router-dom";
 import { resetRoute } from "utils";
 import { ProjectModal } from "screens/project-list/project-modal";
-import { useState } from "react";
 import { ProjectPopover } from "components/project-popover";
-import { useProjectModal } from "screens/project-list/util";
 
 export const AuthenticatedApp = () => {
   // const { open } = useProjectModal();
