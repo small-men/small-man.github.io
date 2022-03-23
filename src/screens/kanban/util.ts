@@ -42,4 +42,4 @@ export const useTasksSearchParams = () => {
     [projectId, param]
   );
 };
-export const useTasksQueryKey = () => ["tasks", useTasksSearchParams()];
+export const useTasksQueryKey = () => ["tasks", useTasksSearchParams()[0]];

@@ -16,19 +16,17 @@ export const AuthenticatedApp = () => {
   // const { open } = useProjectModal();
 
   return (
-    <BrowserRouter>
-      <Container>
-        <PageHeader />
-        <Main>
-          <Routes>
-            <Route path={"/project"} element={<ProjectListScreen />} />
-            <Route path={"/project/:projectId/*"} element={<ProjectScreen />} />
-            <Route index element={<ProjectListScreen />} />
-          </Routes>
-        </Main>
-        <ProjectModal />
-      </Container>
-    </BrowserRouter>
+    <Container>
+      <PageHeader />
+      <Main>
+        <Routes>
+          <Route path={"/project"} element={<ProjectListScreen />} />
+          <Route path={"/project/:projectId/*"} element={<ProjectScreen />} />
+          <Route index element={<ProjectListScreen />} />
+        </Routes>
+      </Main>
+      <ProjectModal />
+    </Container>
   );
 };
 

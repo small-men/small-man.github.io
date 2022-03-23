@@ -7,7 +7,9 @@ export const useConfig = (
 ) => {
   const queryClient = useQueryClient();
   return {
-    onSuccess: () => queryClient.invalidateQueries(queryKey),
+    onSuccess: () => {
+      return queryClient.invalidateQueries(queryKey);
+    },
     async onMutate(target: any) {
       // 获取缓存列表
       const previousItems = queryClient.getQueryData(queryKey);

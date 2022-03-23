@@ -6,6 +6,8 @@ import bugIcon from "assets/bug.svg";
 import taskIcon from "assets/task.svg";
 import { useTaskTypes } from "utils/task-type";
 import { Card } from "antd";
+import { CreateTask } from "./create-task";
+import { useEffect } from "react";
 
 // icon 组件
 const TaskTypeIcon = ({ id }: { id: number }) => {
@@ -34,18 +36,21 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
     <Container>
       <h2>{kanban.name}</h2>
       <TaskContainer>
-        {tasks?.map((task) => (
-          <Card style={{ marginBottom: "0.5rem" }} key={task.id}>
-            <div>{task.name}</div>
-            <TaskTypeIcon id={task.typeId} />
-          </Card>
-        ))}
+        {tasks?.map((task) => {
+          return (
+            <Card style={{ marginBottom: "0.5rem" }} key={task.id + task.name}>
+              <div>{task.name}</div>
+              <TaskTypeIcon id={task.typeId} />
+            </Card>
+          );
+        })}
+        <CreateTask kanbanId={kanban.id} />
       </TaskContainer>
     </Container>
   );
 };
 
-const Container = styled.div`
+export const Container = styled.div`
   min-width: 27rem;
   border-radius: 6px;
   background-color: rgb(244, 245, 247);

@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import * as auth from "auth_provider";
 import { User } from "types/user";
-import { useMount } from "utils";
+import { resetRoute, useMount } from "utils";
 import { http } from "utils/http";
 import { useAsync } from "utils/use-async";
 import { FullPageErrorFallback, FullPageLoading } from "components/lib";
 import { useQueryClient } from "react-query";
+import { useLocation } from "react-router";
 
 const AuthContext = React.createContext<
   | undefined
@@ -37,6 +38,7 @@ export const bootstrapUser = async () => {
 
 export const AuthProvider: React.FC = ({ children }) => {
   const queryClient = useQueryClient();
+
   const {
     data: user,
     run,
@@ -52,6 +54,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     auth.logout().then(() => {
       queryClient.clear();
       setUser(null);
+      resetRoute();
     });
 
   useMount(() => {

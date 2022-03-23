@@ -6,14 +6,17 @@ import App from "./App";
 import { DevTools, loadServer } from "jira-dev-tool";
 import { AppProvider } from "context";
 import "antd/dist/antd.css";
+import { BrowserRouter } from "react-router-dom";
 
 loadServer(() =>
   ReactDOM.render(
     <React.StrictMode>
-      <AppProvider>
-        <DevTools />
-        <App />
-      </AppProvider>
+      <BrowserRouter>
+        <AppProvider>
+          <DevTools />
+          <App />
+        </AppProvider>
+      </BrowserRouter>
     </React.StrictMode>,
     document.getElementById("root")
   )

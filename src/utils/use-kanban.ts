@@ -1,7 +1,9 @@
-import { useQuery } from "react-query";
+import { QueryKey, useMutation, useQuery } from "react-query";
 import { Kanban } from "types/kanban";
+import { Task } from "types/task";
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
+import { useAddConfig } from "./use-optimistic-options";
 
 export const useKanbans = (param?: Partial<Kanban>) => {
   const client = useHttp();
@@ -11,4 +13,17 @@ export const useKanbans = (param?: Partial<Kanban>) => {
       data: cleanObject(param || {}),
     });
   });
+};
+
+export const useAddKanban = (queryKey: QueryKey) => {
+  const client = useHttp();
+
+  return useMutation(
+    (params: Partial<Kanban>) =>
+      client(`kanbans`, {
+        data: params,
+        method: "POST",
+      }),
+    useAddConfig(queryKey)
+  );
 };
