@@ -72,6 +72,7 @@ export const useDocumentTitle = (
         document.title = oldTitle;
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 };

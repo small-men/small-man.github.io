@@ -47,3 +47,7 @@ export const useEditConfig = (queryKey: QueryKey) =>
 // 添加配置
 export const useAddConfig = (queryKey: QueryKey) =>
   useConfig(queryKey, (target, old) => (old ? [...old, target] : []));
+
+// 重新排序配置
+export const useReorderConfig = (queryKey: QueryKey) =>
+  useConfig(queryKey, (target, old) => old || []);

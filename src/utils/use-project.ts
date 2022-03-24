@@ -1,11 +1,7 @@
-import { useCallback, useEffect } from "react";
 import { QueryKey, useMutation, useQuery } from "react-query";
 import { Project } from "types/project";
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
-import { useAsync } from "./use-async";
-import { useQueryClient } from "react-query";
-import { useProjectSearchParams } from "screens/project-list/util";
 import {
   useAddConfig,
   useDeleteConfig,

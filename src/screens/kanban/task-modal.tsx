@@ -4,7 +4,7 @@ import { TaskSelect } from "components/task-select";
 import { UserSelect } from "components/user-select";
 import { useEffect } from "react";
 import { useDeleteTask, useEditTask } from "utils/use-task";
-import { useTaskModal, useTasksQueryKey, useTasksSearchParams } from "./util";
+import { useTaskModal, useTasksQueryKey } from "./util";
 
 export const TaskModal = () => {
   const [form] = useForm();
