@@ -1,5 +1,7 @@
 // 乐观更新 配置生成文件
 import { QueryKey, useQueryClient } from "react-query";
+import { Task } from "types/task";
+import { reorder } from "./reorder";
 
 export const useConfig = (
   queryKey: QueryKey,
@@ -48,6 +50,18 @@ export const useEditConfig = (queryKey: QueryKey) =>
 export const useAddConfig = (queryKey: QueryKey) =>
   useConfig(queryKey, (target, old) => (old ? [...old, target] : []));
 
-// 重新排序配置
-export const useReorderConfig = (queryKey: QueryKey) =>
-  useConfig(queryKey, (target, old) => old || []);
+// 看板排序配置
+export const useReorderKanbanConfig = (queryKey: QueryKey) =>
+  useConfig(queryKey, (target, old) => reorder({ list: old, ...target }));
+
+// 任务排序配置
+export const useReorderTaskConfig = (queryKey: QueryKey) =>
+  useConfig(queryKey, (target, old) => {
+    const orderedList = reorder({ list: old, ...target }) as Task[];
+    // 因为存在跨越看板拖拽，有需要重新指定看板Id
+    return orderedList.map((item) =>
+      item.id === target.fromId
+        ? { ...item, kanbanId: target.toKanbanId }
+        : item
+    );
+  });
