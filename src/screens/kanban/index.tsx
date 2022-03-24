@@ -14,6 +14,9 @@ import {
   useTasksSearchParams,
 } from "./util";
 
+import { DragDropContext } from "react-beautiful-dnd";
+import { Drag, Drop, DropChild } from "components/drag-and-drop";
+
 export const KanbanScreen = () => {
   useDocumentTitle("看板列表");
 
@@ -24,24 +27,34 @@ export const KanbanScreen = () => {
   const isLoading = taskLoading || kanbanLoading;
 
   return (
-    <ScreenContainer>
-      <h1>{currentProject?.name}看板</h1>
-      <SearchPanel />
-      {isLoading ? (
-        <Spin size={"large"} />
-      ) : (
-        <ColumnContainer>
-          {kanbans?.map((item) => (
-            <KanbanColumn key={item.id} kanban={item} />
-          ))}
-          <CreateKanban />
-        </ColumnContainer>
-      )}
-      <TaskModal />
-    </ScreenContainer>
+    <DragDropContext onDragEnd={() => {}}>
+      <ScreenContainer>
+        <h1>{currentProject?.name}看板</h1>
+        <SearchPanel />
+        {isLoading ? (
+          <Spin size={"large"} />
+        ) : (
+          <Drop type={"COLUMN"} direction={"horizontal"} droppableId={"kanban"}>
+            <ColumnContainer>
+              {kanbans?.map((item, index) => (
+                <Drag
+                  key={item.id}
+                  draggableId={"kanban" + item.id}
+                  index={index}
+                >
+                  <KanbanColumn key={item.id} kanban={item} />
+                </Drag>
+              ))}
+              <CreateKanban />
+            </ColumnContainer>
+          </Drop>
+        )}
+        <TaskModal />
+      </ScreenContainer>
+    </DragDropContext>
   );
 };
-export const ColumnContainer = styled.div`
+export const ColumnContainer = styled(DropChild)`
   display: flex;
   flex: 1;
   overflow-x: scroll;

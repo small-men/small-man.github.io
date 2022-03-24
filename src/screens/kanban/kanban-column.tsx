@@ -10,6 +10,7 @@ import { CreateTask } from "./create-task";
 import { Mark } from "components/mark";
 import { useDeleteKanban } from "utils/use-kanban";
 import { Row } from "components/lib";
+import React from "react";
 
 // icon 组件
 const TaskTypeIcon = ({ id }: { id: number }) => {
@@ -28,7 +29,10 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
   );
 };
 
-export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
+export const KanbanColumn = React.forwardRef<
+  HTMLDivElement,
+  { kanban: Kanban }
+>(({ kanban, ...props }, ref) => {
   const [param] = useTasksSearchParams();
   // 获取所有任务详情
   const { data: allTasks } = useTasks(param);
@@ -41,10 +45,10 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
   const { name: keyword } = useTasksSearchParams()[0];
 
   return (
-    <Container>
+    <Container {...props} ref={ref}>
       <Row between={true}>
         <h2>{kanban.name}</h2>
-        <More kanban={kanban} />
+        <More kanban={kanban} key={kanban.id} />
       </Row>
       <TaskContainer>
         {tasks?.map((task) => {
@@ -63,7 +67,7 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
       </TaskContainer>
     </Container>
   );
-};
+});
 
 const More = ({ kanban }: { kanban: Kanban }) => {
   const { mutateAsync } = useDeleteKanban(useKanbansQueryKey());
