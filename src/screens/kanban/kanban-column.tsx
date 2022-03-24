@@ -7,6 +7,8 @@ import taskIcon from "assets/task.svg";
 import { useTaskTypes } from "utils/task-type";
 import { Card } from "antd";
 import { CreateTask } from "./create-task";
+import { useUrlQueryParam } from "utils/url";
+import { mark } from "components/mark";
 
 // icon 组件
 const TaskTypeIcon = ({ id }: { id: number }) => {
@@ -34,6 +36,9 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
 
   const { startEdit } = useTaskModal();
 
+  // 从url中获取关键字
+  const { name: keyword } = useTasksSearchParams()[0];
+
   return (
     <Container>
       <h2>{kanban.name}</h2>
@@ -45,7 +50,7 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
               style={{ marginBottom: "0.5rem", cursor: "pointer" }}
               key={task.id + task.name}
             >
-              <div>{task.name}</div>
+              <div>{mark({ name: task.name, keyword })}</div>
               <TaskTypeIcon id={task.typeId} />
             </Card>
           );
