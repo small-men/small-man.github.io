@@ -4,7 +4,7 @@
  * keyword:搜索关键字
  * @param param0
  */
-export const mark = ({ name, keyword }: { name: string; keyword: string }) => {
+export const Mark = ({ name, keyword }: { name: string; keyword: string }) => {
   if (!keyword) {
     return <>{name}</>;
   }

@@ -7,8 +7,7 @@ import taskIcon from "assets/task.svg";
 import { useTaskTypes } from "utils/task-type";
 import { Card } from "antd";
 import { CreateTask } from "./create-task";
-import { useUrlQueryParam } from "utils/url";
-import { mark } from "components/mark";
+import { Mark } from "components/mark";
 
 // icon 组件
 const TaskTypeIcon = ({ id }: { id: number }) => {
@@ -50,7 +49,7 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
               style={{ marginBottom: "0.5rem", cursor: "pointer" }}
               key={task.id + task.name}
             >
-              <div>{mark({ name: task.name, keyword })}</div>
+              <Mark name={task.name} keyword={keyword} />
               <TaskTypeIcon id={task.typeId} />
             </Card>
           );
