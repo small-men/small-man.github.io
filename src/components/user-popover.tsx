@@ -1,9 +1,6 @@
 import styled from "@emotion/styled";
 import { List, Popover, Typography, Divider } from "antd";
-import { useProjectModal } from "screens/project-list/util";
-import { useProject } from "utils/use-project";
 import { useUsers } from "utils/use-user";
-import { ButtonNoPadding } from "./lib";
 
 export const UserPopover = () => {
   // 获取项目数据
