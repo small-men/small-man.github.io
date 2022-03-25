@@ -2,28 +2,24 @@ import styled from "@emotion/styled";
 import { List, Popover, Typography, Divider } from "antd";
 import { useProjectModal } from "screens/project-list/util";
 import { useProject } from "utils/use-project";
+import { useUsers } from "utils/use-user";
 import { ButtonNoPadding } from "./lib";
 
-export const ProjectPopover = () => {
+export const UserPopover = () => {
   // 获取项目数据
-  const { data: projects, refetch } = useProject();
-  const pinnedProjects = projects?.filter((project) => project.pin);
-  const { open } = useProjectModal();
+  const { data: users, refetch } = useUsers();
 
   const content = (
     <ContentContainer>
-      <Typography.Text type={"secondary"}>收藏项目</Typography.Text>
+      <Typography.Text type={"secondary"}>组员列表</Typography.Text>
       <List>
-        {pinnedProjects?.map((project) => (
-          <List.Item key={project.id}>
-            <List.Item.Meta title={project.name}></List.Item.Meta>
+        {users?.map((user) => (
+          <List.Item key={user.id}>
+            <List.Item.Meta title={user.name}></List.Item.Meta>
           </List.Item>
         ))}
       </List>
       <Divider />
-      <ButtonNoPadding type={"link"} onClick={open}>
-        创建项目
-      </ButtonNoPadding>
     </ContentContainer>
   );
 
@@ -33,7 +29,7 @@ export const ProjectPopover = () => {
       placement={"bottom"}
       content={content}
     >
-      <span>项目</span>
+      <span>组员</span>
     </Popover>
   );
 };

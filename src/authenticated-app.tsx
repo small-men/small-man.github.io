@@ -8,6 +8,7 @@ import { Route, Routes } from "react-router";
 import { resetRoute } from "utils";
 import { ProjectModal } from "screens/project-list/project-modal";
 import { ProjectPopover } from "components/project-popover";
+import { UserPopover } from "components/user-popover";
 
 export const AuthenticatedApp = () => {
   // const { open } = useProjectModal();
@@ -35,7 +36,7 @@ const PageHeader = () => {
           <SoftwareLogo width={"18rem"} />
         </ButtonNoPadding>
         <ProjectPopover />
-        <span>用户</span>
+        <UserPopover />
       </Left>
       <Right>
         <User />
